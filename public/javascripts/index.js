@@ -1,14 +1,40 @@
 var hour = 0;
 var day = 0;
+var storeIDs = [98053, 98007, 98077, 98055, 98011, 98046];
+var cdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
 
-function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
-    this.storeID= pStoreID;
-    this.salesPersonID = pSalesPersonID;
-    this.cdID = pCdID;
-    this.pricePaid = pPricePaid;
+function Order() {
+    let store = Math.floor(Math.random() * 5);
+    this.storeID = storeIDs[store];
+    switch (store) { //doing this the dumb way
+        case 0:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 1);
+            break;
+        case 1:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 5);
+            break;
+        case 2:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 9);
+            break;
+        case 3:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 13);
+            break;
+        case 4:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 17);
+            break;
+        case 5:
+            this.salesPersonID = Math.floor(Math.random() * 3 + 21);
+            break;
+        default:
+            this.salesPersonID = 0; // this shouldn't happen
+            break;
+    }
+    this.cdID = cdIDs[Math.floor(Math.random() * 9)];
+    this.pricePaid = Math.floor(Math.random() * 10 + 5);
+
     this.hourPurch = hour;
     this.dayPurch = day;
-    hour++;
+    hour += Math.floor(Math.random() * 4 + 1); //increment hour by a random amount between 1 and 5
     if (hour > 23) {
         hour = 0;
         day++;
