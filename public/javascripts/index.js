@@ -5,9 +5,9 @@ var cdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621
 
 function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
     let store = Math.floor(Math.random() * 5);
-    this.storeID = (pStoreID != null) ? pStoreID : storeIDs[store];
-    this.salesPersonID = (pSalesPersonID != null) ? pSalesPersonID : Math.floor(Math.random() * 3 + (store*4)+1);
-    this.cdID = (pCdID != null) ? pCdID : cdIDs[Math.floor(Math.random() * 9)];
+    this.storeID = (pStoreID != null || pStoreID != '') ? pStoreID : storeIDs[store];
+    this.salesPersonID = (pSalesPersonID != null || pSalesPersonID != '') ? pSalesPersonID : Math.floor(Math.random() * 3 + (store*4)+1);
+    this.cdID = (pCdID != null || pCdID != '') ? pCdID : cdIDs[Math.floor(Math.random() * 9)];
     this.pricePaid = (pPricePaid != null) ? pPricePaid : Math.floor(Math.random() * 10 + 5);
 
     this.hourPurch = hour;
