@@ -12,7 +12,7 @@ function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
     if (hour > 23) {
         hour = 0;
         day++;
-        if (day > 256) { //I don't know why day is supposed to be 0-256
+        if (day > 365) { //I don't know why day is supposed to be 0-256
             day = 0;
         }
     }
@@ -25,17 +25,18 @@ var ClientNotes = [];  // our local copy of the cloud data
 document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("submit").addEventListener("click", function () {
-        var tName = document.getElementById("name").value;
-        var tLocation = document.getElementById("location").value;
-        var tLength = document.getElementById("length").value;
-        var oneTrail = new Trail(tName, tLocation, tLength);
+        var tStoreID = document.getElementById("storeID").value;
+        var tSalesPersonID = document.getElementById("salesPersonID").value;
+        var tCdID = document.getElementById("cdID").value;
+        var tPricePaid = document.getElementById("pricePaid").value;
+        var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
 
         $.ajax({
-            url: '/NewTrail',
+            url: '/NewOrder',
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(oneTrail),
+            data: JSON.stringify(oneOrder),
             success: function (result) {
                 console.log("added new trail")
             },  
@@ -54,10 +55,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("delete").addEventListener("click", function () {
         
-        var whichTrail = document.getElementById('deleteName').value;
+        var whichOrder = document.getElementById('deleteName').value;
         var idToDelete = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].name === whichTrail) {
+            if(ClientNotes[i].name === whichOrder) {
                 idToDelete = ClientNotes[i]._id;
            }
         }
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if(idToDelete != "")
         {
                      $.ajax({  
-                    url: 'DeleteTrail/'+ idToDelete,
+                    url: 'DeleteOrder/'+ idToDelete,
                     type: 'DELETE',  
                     contentType: 'application/json',  
                     success: function (response) {  
@@ -84,12 +85,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     document.getElementById("msubmit").addEventListener("click", function () {
-        var tName = document.getElementById("mname").value;
-        var tLocation = document.getElementById("mlocation").value;
-        var tLength = document.getElementById("mlength").value;
-        var oneTrail = new Trail(tName, tLocation, tLength);
-        oneTrail.completed =  document.getElementById("mcompleted").value;
-        oneTrail.dateCompleted =  document.getElementById("mdatecompleted").value;
+        var tStoreID = document.getElementById("mstoreid").value;
+        var tSalesPersonID = document.getElementById("msalespersonid").value;
+        var tCdID = document.getElementById("mcdid").value;
+        var tPricePaid = document.getElementById("mpricepaid").value;
+        var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
+        oneOrder.completed =  document.getElementById("mcompleted").value;
+        oneOrder.dateCompleted =  document.getElementById("mdatecompleted").value;
         
             $.ajax({
                 url: 'UpdateTrail/'+idToFind,
