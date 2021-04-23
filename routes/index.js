@@ -5,7 +5,7 @@ var router = express.Router();
 // .ADO.Net is a wrapper over raw SQL server interface
 const mongoose = require("mongoose");
 
-const Trails = require("../Orders");
+const Orders = require("../Orders");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
@@ -37,15 +37,15 @@ router.get('/', function(req, res) {
   res.sendFile('index.html');
 });
 
-/* GET all Trails */
-router.get('/Trails', function(req, res) {
+/* GET all Orders */
+router.get('/Orders', function(req, res) {
   // find {  takes values, but leaving it blank gets all}
-  Trails.find({}, (err, AllTrails) => {
+  Orders.find({}, (err, AllOrders) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(AllTrails);
+    res.status(200).json(AllOrder);
   });
 });
 
@@ -53,19 +53,10 @@ router.get('/Trails', function(req, res) {
 
 
 /* post a new Trail and push to Mongo */
-router.post('/NewTrail', function(req, res) {
+router.post('/Orders', function(req, res) {
 
-    let oneNewTrail = new Trails(req.body);  // call constuctor in Trails code that makes a new mongo Trail object
-    console.log(req.body);
-    oneNewTrail.save((err, trail) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-      else {
-      console.log(trail);
-      res.status(201).json(trail);
-      }
-    });
+    let oneNewOrder = new Orders(req.body);  // call constuctor in Trails code that makes a new mongo Trail object
+    console.log(oneNewOrder);
 });
 
 

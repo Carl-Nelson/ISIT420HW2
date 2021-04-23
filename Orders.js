@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 // schema will enforce consistency in all our documents (records)
 const Schema = mongoose.Schema;
 
-const TrailSchema = new Schema({
+const OrderSchema = new Schema({
   storeID: {
     type: String,
     required: true
@@ -34,4 +34,4 @@ const TrailSchema = new Schema({
   } 
 });
 
-module.exports = mongoose.model("Trails", TrailSchema);
+module.exports = mongoose.model("Orders", OrderSchema);

@@ -3,22 +3,23 @@ var day = 1;
 var storeIDs = [98053, 98007, 98077, 98055, 98011, 98046];
 var cdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
 
-function Order() {
+function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
     let store = Math.floor(Math.random() * 5);
-    this.storeID = storeIDs[store];
-    this.salesPersonID = Math.floor(Math.random() * 3 + (store*4)+1);
-    this.cdID = cdIDs[Math.floor(Math.random() * 9)];
-    this.pricePaid = Math.floor(Math.random() * 10 + 5);
+    this.storeID = (pStoreID != null) ? pStoreID : storeIDs[store];
+    this.salesPersonID = (pSalesPersonID != null) ? pSalesPersonID : Math.floor(Math.random() * 3 + (store*4)+1);
+    this.cdID = (pCdID != null) ? pCdID : cdIDs[Math.floor(Math.random() * 9)];
+    this.pricePaid = (pPricePaid != null) ? pPricePaid : Math.floor(Math.random() * 10 + 5);
 
     this.hourPurch = hour;
     this.dayPurch = day;
     hour += Math.floor(Math.random() * 4 + 1); //increment hour by a random amount between 1 and 5
+    day += Math.floor(Math.random() * 6 + 1); // increment day by a random amount between 1 and 7
     if (hour > 23) {
-        hour = 0;
-        day++;
-        if (day > 365) {
-            day = 1;
-        }
+    hour = 0;
+    day++;
+    }
+    if (day > 365) {
+    day = 1;
     }
 }
 var ClientNotes = [];  // our local copy of the cloud data
@@ -27,8 +28,41 @@ var ClientNotes = [];  // our local copy of the cloud data
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
+    // The create button works just fine.
+    document.getElementById("create").addEventListener("click", function () {
+        var oneOrder = new Order();
+        
+        document.getElementById("storeID").value = oneOrder.storeID;
+        document.getElementById("salesPersonID").value = oneOrder.salesPersonID;
+        document.getElementById("cdID").value = oneOrder.cdID;
+        document.getElementById("pricePaid").value = oneOrder.pricePaid;
+    })
+    // The submitone button works. but it re randomizes the the values that are prepopulated. Need a fix.
+    document.getElementById("submitOne").addEventListener("click", function () {
+        var tStoreID = document.getElementById("storeID").value;
+        var tSalesPersonID = document.getElementById("salesPersonID").value;
+        var tCdID = document.getElementById("cdID").value;
+        var tPricePaid = document.getElementById("pricePaid").value;
+        var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
 
-    document.getElementById("submit").addEventListener("click", function () {
+        $.ajax({
+            url: '/Orders',
+            method: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify(oneOrder),
+            success: function (result) {
+                console.log("added new order")
+                console.log(data)
+            },  
+            error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+              }
+
+        });
+    });
+
+    document.getElementById("submit500").addEventListener("click", function () {
         var tStoreID = document.getElementById("storeID").value;
         var tSalesPersonID = document.getElementById("salesPersonID").value;
         var tCdID = document.getElementById("cdID").value;
@@ -51,12 +85,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 
-    document.getElementById("get").addEventListener("click", function () {
-        updateList()
-    });
-  
-
 // Everything below this is maybe not needed but keeping for possible future use.
+    // document.getElementById("get").addEventListener("click", function () {
+    //     updateList()
+    // });
+  
     // document.getElementById("delete").addEventListener("click", function () {
         
     //     var whichOrder = document.getElementById('deleteName').value;
@@ -135,40 +168,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // });
 
     // get the server data into the local array
-    updateList();
+    //updateList();
 
 });
 
 
-function updateList() {
-var ul = document.getElementById('listUl');
-ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
+// function updateList() {
+// var ul = document.getElementById('listUl');
+// ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
 
-//var ul = document.createElement('ul')
+// //var ul = document.createElement('ul')
 
-$.get("/Orders", function(data, status){  // AJAX get
-    ClientNotes = data;  // put the returned server json data into our local array
+// $.get("/Orders", function(data, status){  // AJAX get
+//     ClientNotes = data;  // put the returned server json data into our local array
 
-    // sort array by one property
-    ClientNotes.sort(compare);  // see compare method below
-    console.log(data);
-    //listDiv.appendChild(ul);
-    ClientNotes.forEach(ProcessOneOrder); // build one li for each item in array
-    function ProcessOneOrder(item, index) {
-        var li = document.createElement('li');
-        ul.appendChild(li);
+//     // sort array by one property
+//     ClientNotes.sort(compare);  // see compare method below
+//     console.log(data);
+//     //listDiv.appendChild(ul);
+//     ClientNotes.forEach(ProcessOneOrder); // build one li for each item in array
+//     function ProcessOneOrder(item, index) {
+//         var li = document.createElement('li');
+//         ul.appendChild(li);
 
-        li.innerHTML=li.innerHTML + index + ": " + " Store ID: " + item.storeID + ", Sales Person ID: " + item.salesPersonID + ", CD ID: " + item.cdID + ", Price Paid: "+ item.pricePaid + ", Hour of Purchase: " + item.hourPurch + ", Day of Purchase: " + item.dayPurch;
-    }
-});
-}
+//         li.innerHTML=li.innerHTML + index + ": " + " Store ID: " + item.storeID + ", Sales Person ID: " + item.salesPersonID + ", CD ID: " + item.cdID + ", Price Paid: "+ item.pricePaid + ", Hour of Purchase: " + item.hourPurch + ", Day of Purchase: " + item.dayPurch;
+//     }
+// });
+// }
 
-function compare(a,b) {
-    if (a.completed == false && b.completed== true) {
-        return -1;
-    }
-    if (a.completed == false && b.completed== true) {
-        return 1;
-    }
-    return 0;
-}
+// function compare(a,b) {
+//     if (a.completed == false && b.completed== true) {
+//         return -1;
+//     }
+//     if (a.completed == false && b.completed== true) {
+//         return 1;
+//     }
+//     return 0;
+// }
