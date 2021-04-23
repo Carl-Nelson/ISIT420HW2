@@ -1,19 +1,23 @@
 var hour = 0;
-var day = 0;
+var day = 1;
+var storeIDs = [98053, 98007, 98077, 98055, 98011, 98046];
+var cdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
 
-function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
-    this.storeID= pStoreID;
-    this.salesPersonID = pSalesPersonID;
-    this.cdID = pCdID;
-    this.pricePaid = pPricePaid;
+function Order() {
+    let store = Math.floor(Math.random() * 5);
+    this.storeID = storeIDs[store];
+    this.salesPersonID = Math.floor(Math.random() * 3 + (store*4)+1);
+    this.cdID = cdIDs[Math.floor(Math.random() * 9)];
+    this.pricePaid = Math.floor(Math.random() * 10 + 5);
+
     this.hourPurch = hour;
     this.dayPurch = day;
-    hour++;
+    hour += Math.floor(Math.random() * 4 + 1); //increment hour by a random amount between 1 and 5
     if (hour > 23) {
         hour = 0;
         day++;
-        if (day > 365) { //I don't know why day is supposed to be 0-256
-            day = 0;
+        if (day > 356) {
+            day = 1;
         }
     }
 }
