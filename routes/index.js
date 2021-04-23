@@ -52,13 +52,31 @@ router.get('/Orders', function(req, res) {
 
 
 
-/* post a new Trail and push to Mongo */
+/* post a new Order and don't push to Mongo */
 router.post('/Orders', function(req, res) {
 
-    let oneNewOrder = new Orders(req.body);  // call constuctor in Trails code that makes a new mongo Trail object
-    console.log(oneNewOrder);
+    //don't need to post to mongo for this one
+    //let oneNewOrder = new Orders(req.body);  // call constuctor in Trails code that makes a new mongo Trail object
+    //console.log(oneNewOrder);
+
+    console.log(req.body);
 });
 
+
+router.post('/NewOrder', function(req, res) {
+
+  let oneNewOrder = new Orders(req.body);  // call constuctor in Orders code that makes a new mongo Order object
+  console.log(oneNewOrder);
+  oneNewOrder.save((err, order) => {
+    if (err) {
+      res.status(500).send(err);
+    }
+    else {
+    console.log(order);
+    res.status(201).json(order);
+    }
+  });
+});
 
 router.delete('/DeleteTrail/:id', function (req, res) {
   Trails.deleteOne({ _id: req.params.id }, (err, trail) => { 
