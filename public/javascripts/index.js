@@ -3,7 +3,7 @@ var day = 1;
 var storeIDs = [98053, 98007, 98077, 98055, 98011, 98046];
 var cdIDs = [123456, 123654, 321456, 321654, 654123, 654321, 543216, 354126, 621453, 623451];
 
-function Order(pStoreID, pSalesPersonID, pCdID, pPricePaid) {
+function Order(pStoreID = null, pSalesPersonID = null, pCdID = null, pPricePaid = null) {
     let store = Math.floor(Math.random() * 5);
     this.storeID = (pStoreID != null || pStoreID != '') ? pStoreID : storeIDs[store];
     this.salesPersonID = (pSalesPersonID != null || pSalesPersonID != '') ? pSalesPersonID : Math.floor(Math.random() * 3 + (store*4)+1);
