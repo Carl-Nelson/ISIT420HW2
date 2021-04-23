@@ -16,14 +16,14 @@ function Order() {
     if (hour > 23) {
         hour = 0;
         day++;
-        if (day > 356) {
+        if (day > 365) {
             day = 1;
         }
     }
 }
 var ClientNotes = [];  // our local copy of the cloud data
 
-// EVERYTHING BELOW THIS POINT IS UNTOUCHED
+// EVERYTHING BELOW THIS POINT IS TOUCHED
 
 
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -56,88 +56,83 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
   
 
-
-    document.getElementById("delete").addEventListener("click", function () {
+// Everything below this is maybe not needed but keeping for possible future use.
+    // document.getElementById("delete").addEventListener("click", function () {
         
-        var whichOrder = document.getElementById('deleteName').value;
-        var idToDelete = "";
-        for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].name === whichOrder) {
-                idToDelete = ClientNotes[i]._id;
-           }
-        }
+    //     var whichOrder = document.getElementById('deleteName').value;
+    //     var idToDelete = "";
+    //     for(i=0; i< ClientNotes.length; i++){
+    //         if(ClientNotes[i].name === whichOrder) {
+    //             idToDelete = ClientNotes[i]._id;
+    //        }
+    //     }
         
-        if(idToDelete != "")
-        {
-                     $.ajax({  
-                    url: 'DeleteOrder/'+ idToDelete,
-                    type: 'DELETE',  
-                    contentType: 'application/json',  
-                    success: function (response) {  
-                        console.log(response);  
-                    },  
-                    error: function () {  
-                        console.log('Error in Operation');  
-                    }  
-                });  
-        }
-        else {
-            console.log("no matching Subject");
-        } 
-    });
+    //     if(idToDelete != "")
+    //     {
+    //                  $.ajax({  
+    //                 url: 'DeleteOrder/'+ idToDelete,
+    //                 type: 'DELETE',  
+    //                 contentType: 'application/json',  
+    //                 success: function (response) {  
+    //                     console.log(response);  
+    //                 },  
+    //                 error: function () {  
+    //                     console.log('Error in Operation');  
+    //                 }  
+    //             });  
+    //     }
+    //     else {
+    //         console.log("no matching Subject");
+    //     } 
+    // });
 
 
 
-    document.getElementById("msubmit").addEventListener("click", function () {
-        var tStoreID = document.getElementById("mstoreid").value;
-        var tSalesPersonID = document.getElementById("msalespersonid").value;
-        var tCdID = document.getElementById("mcdid").value;
-        var tPricePaid = document.getElementById("mpricepaid").value;
-        var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
-        oneOrder.completed =  document.getElementById("mcompleted").value;
-        oneOrder.dateCompleted =  document.getElementById("mdatecompleted").value;
+    // document.getElementById("msubmit").addEventListener("click", function () {
+    //     var tStoreID = document.getElementById("mstoreid").value;
+    //     var tSalesPersonID = document.getElementById("msalespersonid").value;
+    //     var tCdID = document.getElementById("mcdid").value;
+    //     var tPricePaid = document.getElementById("mpricepaid").value;
+    //     var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
         
-            $.ajax({
-                url: 'UpdateTrail/'+idToFind,
-                type: 'PUT',
-                contentType: 'application/json',
-                data: JSON.stringify(oneTrail),
-                    success: function (response) {  
-                        console.log(response);  
-                    },  
-                    error: function () {  
-                        console.log('Error in Operation');  
-                    }  
-                });  
+    //         $.ajax({
+    //             url: 'UpdateOrder/'+idToFind,
+    //             type: 'PUT',
+    //             contentType: 'application/json',
+    //             data: JSON.stringify(oneOrder),
+    //                 success: function (response) {  
+    //                     console.log(response);  
+    //                 },  
+    //                 error: function () {  
+    //                     console.log('Error in Operation');  
+    //                 }  
+    //             });  
             
        
-    });
+    // });
 
 
     
-    var idToFind = ""; // using the same value from the find operation for the modify
-    // find one to modify
-    document.getElementById("find").addEventListener("click", function () {
-        var tName = document.getElementById("modName").value;
-         idToFind = "";
-        for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].name === tName) {
-                idToFind = ClientNotes[i]._id;
-           }
-        }
-        console.log(idToFind);
+    // var idToFind = ""; // using the same value from the find operation for the modify
+    // // find one to modify
+    // document.getElementById("find").addEventListener("click", function () {
+    //     var tName = document.getElementById("modName").value;
+    //      idToFind = "";
+    //     for(i=0; i< ClientNotes.length; i++){
+    //         if(ClientNotes[i].name === tName) {
+    //             idToFind = ClientNotes[i]._id;
+    //        }
+    //     }
+    //     console.log(idToFind);
  
-        $.get("/FindTrail/"+ idToFind, function(data, status){ 
-            console.log(data[0].name);
-            document.getElementById("mname").value = data[0].name;
-            document.getElementById("mlocation").value= data[0].location;
-            document.getElementById("mlength").value = data[0].length;
-            document.getElementById("mcompleted").value = data[0].completed;
-            document.getElementById("mdatecompleted").value = data[0].dateCompleted;
-           
-
-        });
-    });
+    //     $.get("/FindOrder/"+ idToFind, function(data, status){ 
+    //         console.log(data[0].name);
+    //         document.getElementById("mstoreid").value = data[0].name;
+    //         document.getElementById("msalespersonid").value= data[0].location;
+    //         document.getElementById("mcdid").value = data[0].length;
+    //         document.getElementById("mpricepaid").value = data[0].completed;
+    //     });
+    // });
 
     // get the server data into the local array
     updateList();
@@ -151,19 +146,19 @@ ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
 
 //var ul = document.createElement('ul')
 
-$.get("/Trails", function(data, status){  // AJAX get
+$.get("/Orders", function(data, status){  // AJAX get
     ClientNotes = data;  // put the returned server json data into our local array
 
     // sort array by one property
     ClientNotes.sort(compare);  // see compare method below
     console.log(data);
     //listDiv.appendChild(ul);
-    ClientNotes.forEach(ProcessOneTrail); // build one li for each item in array
-    function ProcessOneTrail(item, index) {
+    ClientNotes.forEach(ProcessOneOrder); // build one li for each item in array
+    function ProcessOneOrder(item, index) {
         var li = document.createElement('li');
         ul.appendChild(li);
 
-        li.innerHTML=li.innerHTML + index + ": " + " Name: " + item.name + "  " + item.location + ":  " + item.length + " Done? "+ item.completed + " Date Done: " + item.dateCompleted;
+        li.innerHTML=li.innerHTML + index + ": " + " Store ID: " + item.storeID + ", Sales Person ID: " + item.salesPersonID + ", CD ID: " + item.cdID + ", Price Paid: "+ item.pricePaid + ", Hour of Purchase: " + item.hourPurch + ", Day of Purchase: " + item.dayPurch;
     }
 });
 }
