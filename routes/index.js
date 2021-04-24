@@ -31,25 +31,10 @@ mongoose.connect(dbURI, options).then(
 );
 
 
-
 /* GET home page. */
 router.get('/', function(req, res) {
   res.sendFile('index.html');
 });
-
-/* GET all Orders */
-router.get('/Orders', function(req, res) {
-  // find {  takes values, but leaving it blank gets all}
-  Orders.find({}, (err, AllOrders) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
-    res.status(200).json(AllOrder);
-  });
-});
-
-
 
 
 /* post a new Order and don't push to Mongo */
@@ -78,40 +63,5 @@ router.post('/NewOrder', function(req, res) {
   });
 });
 
-router.delete('/DeleteTrail/:id', function (req, res) {
-  Trails.deleteOne({ _id: req.params.id }, (err, trail) => { 
-    if (err) {
-      res.status(404).send(err);
-    }
-    res.status(200).json({ message: "Trail successfully deleted" });
-  });
-});
-
-
-router.put('/UpdateTrail/:id', function (req, res) {
-  Trails.findOneAndUpdate(
-    { _id: req.params.id },
-    { name: req.body.name, location: req.body.location, length: req.body.length, completed: req.body.completed, dateCompleted: req.body.dateCompleted },
-   { new: true },
-    (err, trail) => {
-      if (err) {
-        res.status(500).send(err);
-    }
-    res.status(200).json(trail);
-    })
-  });
-
-
-  /* GET one Trail */
-router.get('/FindTrail/:id', function(req, res) {
-  console.log(req.params.id );
-  Trails.find({ _id: req.params.id }, (err, oneTrail) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
-    res.status(200).json(oneTrail);
-  });
-});
 
 module.exports = router;

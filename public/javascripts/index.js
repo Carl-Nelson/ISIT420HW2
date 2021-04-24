@@ -24,8 +24,6 @@ function Order(pStoreID = null, pSalesPersonID = null, pCdID = null, pPricePaid 
 }
 var ClientNotes = [];  // our local copy of the cloud data
 
-// EVERYTHING BELOW THIS POINT IS TOUCHED
-
 
 document.addEventListener("DOMContentLoaded", function (event) {
     // The create button works just fine.
@@ -65,12 +63,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("submit500").addEventListener("click", function () {
 
-        // var tStoreID = document.getElementById("storeID").value;
-        // var tSalesPersonID = document.getElementById("salesPersonID").value;
-        // var tCdID = document.getElementById("cdID").value;
-        // var tPricePaid = document.getElementById("pricePaid").value;
-        // var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
-
         for (let i = 0; i < 500; i++) {
             var oneOrder = new Order();
 
@@ -93,123 +85,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     });
 
-// Everything below this is maybe not needed but keeping for possible future use.
-    // document.getElementById("get").addEventListener("click", function () {
-    //     updateList()
-    // });
-  
-    // document.getElementById("delete").addEventListener("click", function () {
-        
-    //     var whichOrder = document.getElementById('deleteName').value;
-    //     var idToDelete = "";
-    //     for(i=0; i< ClientNotes.length; i++){
-    //         if(ClientNotes[i].name === whichOrder) {
-    //             idToDelete = ClientNotes[i]._id;
-    //        }
-    //     }
-        
-    //     if(idToDelete != "")
-    //     {
-    //                  $.ajax({  
-    //                 url: 'DeleteOrder/'+ idToDelete,
-    //                 type: 'DELETE',  
-    //                 contentType: 'application/json',  
-    //                 success: function (response) {  
-    //                     console.log(response);  
-    //                 },  
-    //                 error: function () {  
-    //                     console.log('Error in Operation');  
-    //                 }  
-    //             });  
-    //     }
-    //     else {
-    //         console.log("no matching Subject");
-    //     } 
-    // });
-
-
-
-    // document.getElementById("msubmit").addEventListener("click", function () {
-    //     var tStoreID = document.getElementById("mstoreid").value;
-    //     var tSalesPersonID = document.getElementById("msalespersonid").value;
-    //     var tCdID = document.getElementById("mcdid").value;
-    //     var tPricePaid = document.getElementById("mpricepaid").value;
-    //     var oneOrder = new Order(tStoreID, tSalesPersonID, tCdID, tPricePaid);
-        
-    //         $.ajax({
-    //             url: 'UpdateOrder/'+idToFind,
-    //             type: 'PUT',
-    //             contentType: 'application/json',
-    //             data: JSON.stringify(oneOrder),
-    //                 success: function (response) {  
-    //                     console.log(response);  
-    //                 },  
-    //                 error: function () {  
-    //                     console.log('Error in Operation');  
-    //                 }  
-    //             });  
-            
-       
-    // });
-
-
-    
-    // var idToFind = ""; // using the same value from the find operation for the modify
-    // // find one to modify
-    // document.getElementById("find").addEventListener("click", function () {
-    //     var tName = document.getElementById("modName").value;
-    //      idToFind = "";
-    //     for(i=0; i< ClientNotes.length; i++){
-    //         if(ClientNotes[i].name === tName) {
-    //             idToFind = ClientNotes[i]._id;
-    //        }
-    //     }
-    //     console.log(idToFind);
- 
-    //     $.get("/FindOrder/"+ idToFind, function(data, status){ 
-    //         console.log(data[0].name);
-    //         document.getElementById("mstoreid").value = data[0].name;
-    //         document.getElementById("msalespersonid").value= data[0].location;
-    //         document.getElementById("mcdid").value = data[0].length;
-    //         document.getElementById("mpricepaid").value = data[0].completed;
-    //     });
-    // });
-
-    // get the server data into the local array
-    //updateList();
-
 });
-
-
-// function updateList() {
-// var ul = document.getElementById('listUl');
-// ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
-
-// //var ul = document.createElement('ul')
-
-// $.get("/Orders", function(data, status){  // AJAX get
-//     ClientNotes = data;  // put the returned server json data into our local array
-
-//     // sort array by one property
-//     ClientNotes.sort(compare);  // see compare method below
-//     console.log(data);
-//     //listDiv.appendChild(ul);
-//     ClientNotes.forEach(ProcessOneOrder); // build one li for each item in array
-//     function ProcessOneOrder(item, index) {
-//         var li = document.createElement('li');
-//         ul.appendChild(li);
-
-//         li.innerHTML=li.innerHTML + index + ": " + " Store ID: " + item.storeID + ", Sales Person ID: " + item.salesPersonID + ", CD ID: " + item.cdID + ", Price Paid: "+ item.pricePaid + ", Hour of Purchase: " + item.hourPurch + ", Day of Purchase: " + item.dayPurch;
-//     }
-// });
-// }
-
-// function compare(a,b) {
-//     if (a.completed == false && b.completed== true) {
-//         return -1;
-//     }
-//     if (a.completed == false && b.completed== true) {
-//         return 1;
-//     }
-//     return 0;
-// }
